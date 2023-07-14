@@ -23,14 +23,12 @@ namespace BookingWepApp.Controllers
 
         public IActionResult Index(bool clear)
         {
-            string currentUserId = GetCurrentUserId();
 
             var hotelsViewModel = new HotelsViewModel()
             {
                 Hotels = _appContext.Hotels.Include(h => h.Rooms)
             };
 
-            FillingViewBags();
             if (HttpContext.Session.GetString("SearchKeyword") == null || clear)
             {
                 HttpContext.Session.SetString("SearchKeyword", string.Empty);
@@ -57,8 +55,6 @@ namespace BookingWepApp.Controllers
                 Hotels = hotelListAfterSearch
             };
 
-            FillingViewBags();
-
             return Filter(newHotelViewModel);
         }
 
@@ -68,37 +64,13 @@ namespace BookingWepApp.Controllers
             var hotelListAfterSearch = hotelsViewModel.Hotels ??
                 GetHotelsBySearch(HttpContext.Session.GetString("SearchKeyword"));
 
-            var distanceList = hotelsViewModel.DistanceList;
-
-            var hotelListAfterFilter = hotelListAfterSearch
-                           .Where(h => distanceList != null ? h.DistanceFromCenter < distanceList.Max() : true)
-                           .ToList();
-
-            string currentUserId = GetCurrentUserId();
-
             var newHotelViewModel = new HotelsViewModel
             {
                 SearchKeyword = HttpContext.Session.GetString("SearchKeyword"),
-                Hotels = hotelListAfterFilter
+                Hotels = hotelListAfterSearch
             };
-            FillingViewBags();
 
             return View("Index", newHotelViewModel);
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
-        private void FillingViewBags()
-        {
-            ViewBag.Stars = _appContext.Hotels
-                .Select(h => h.Stars)
-                .OrderByDescending(s => s)
-                .Distinct()
-                .ToList();
         }
 
         private IEnumerable<Hotel> GetHotelsBySearch(string hotelName)
@@ -121,12 +93,5 @@ namespace BookingWepApp.Controllers
                 .ToList();
         }
 
-        private string GetCurrentUserId()
-        {
-            var claimIdentity = (ClaimsIdentity)User.Identity;
-            var identityClaimUser = claimIdentity.FindFirst(ClaimTypes.NameIdentifier);
-            string currentUserId = identityClaimUser?.Value;
-            return currentUserId;
-        }
     }
 }

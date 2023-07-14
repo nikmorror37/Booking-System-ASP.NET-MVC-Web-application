@@ -36,8 +36,6 @@ namespace BookingWepApp.Controllers
 
         [BindProperty]
         public ApplicationUser CurrentUser { get; set; }
-        [BindProperty]
-        public Payment Payment { get; set; }
 
         public async Task<IActionResult> HotelPage(int id)
         {
@@ -96,7 +94,13 @@ namespace BookingWepApp.Controllers
                 ViewBag.Error = "Укажите даты заезда и выезда";
                 return View("HotelPage", HotelDetailsData.CurrentHotel);
             }
-
+            if (checkOutDate <= checkInDate)
+            {
+                //выводим ошибку
+                ViewBag.Error = "Дата выселения должна быть строго больше даты заселения";
+                //возвращаем эту же страницу
+                return View("HotelPage", HotelDetailsData.CurrentHotel);
+            }
             //(StartA <= EndB) and (EndA >= StartB)
             string sql = "select q1.RoomType, q2.cnt, q1.cnt " +
                 "from " +
