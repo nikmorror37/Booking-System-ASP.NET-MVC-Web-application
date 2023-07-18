@@ -29,10 +29,10 @@ namespace BookingWepApp.Controllers
             _userManager = userManager;
         }
 
-        [BindProperty]
-        [Required]
-        [EmailAddress]
-        public string Email { get; set; }
+        //[BindProperty]
+        //[Required]
+        //[EmailAddress]
+        //public string Email { get; set; }
 
         [BindProperty]
         public ApplicationUser CurrentUser { get; set; }

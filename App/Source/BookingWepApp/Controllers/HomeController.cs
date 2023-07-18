@@ -1,14 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using BookingWepApp.Data;
+using BookingWepApp.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using BookingWepApp.Data;
-using BookingWepApp.Models;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Security.Claims;
 
 namespace BookingWepApp.Controllers
 {
