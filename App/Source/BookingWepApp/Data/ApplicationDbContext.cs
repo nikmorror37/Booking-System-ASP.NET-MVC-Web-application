@@ -30,10 +30,10 @@ namespace BookingWepApp.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(connectionStringBuilder.ToString());
+            optionsBuilder.UseSqlServer(connectionStringBuilder.ToString()); //регистрация контекста БД
         }
 
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder builder) //все что нужно для первоначальной инициализации БД
         {
             base.OnModelCreating(builder);
 

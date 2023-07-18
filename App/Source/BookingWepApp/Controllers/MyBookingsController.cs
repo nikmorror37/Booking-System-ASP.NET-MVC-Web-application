@@ -32,7 +32,7 @@ namespace BookingWepApp.Controllers
             }
 
             var myBookingsList = await _appContext.Bookings
-                                    .Where(b => b.UserId == CurrentUser.Id && b.Status == Status.Accepted)
+                                    .Where(b => b.UserId == CurrentUser.Id && b.Status == Status.Accepted) 
                                     .Include(b => b.Payment)
                                     .Where(p => p.Status == Status.Accepted)
                                     .Include(b => b.Room)
